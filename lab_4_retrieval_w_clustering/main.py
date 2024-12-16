@@ -283,18 +283,6 @@ class VectorDBSearchEngine(BasicSearchEngine):
             return_list.append((document[1], retrieved_documents[index]))
         return return_list
 
-        tokenized_query = self._db.get_tokenizer().tokenize(query)
-        if not tokenized_query:
-            raise ValueError
-
-        knn = self._calculate_knn(self._db.get_vectorizer().vectorize(tokenized_query),
-                                  [vect[1] for vect in self._db.get_vectors()], n_neighbours)
-        if not knn:
-            raise ValueError('Argument is empty')
-        relevant_docs = self._db.get_raw_documents(tuple(index[0] for index in knn))
-        if not relevant_docs:
-            raise ValueError('Argument is empty')
-        return [(knn[index][1], doc) for index, doc in enumerate(relevant_docs)]
 
 class ClusterDTO:
     """
